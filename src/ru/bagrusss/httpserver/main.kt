@@ -3,6 +3,8 @@ package ru.bagrusss.httpserver
 import org.apache.commons.cli.DefaultParser
 import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.Options
+import org.apache.commons.cli.ParseException
+import java.net.BindException
 
 /**
  * Created by vladislav
@@ -22,15 +24,18 @@ fun main(args: Array<String>) {
         println(Runtime.getRuntime().availableProcessors())
         return
     }
+    var port = 0
     try {
-        val port = Integer.valueOf(cmd.getOptionValue('p'))
+        port = Integer.valueOf(cmd.getOptionValue('p'))
         val cpu = Integer.valueOf(cmd.getOptionValue('c'))
         val root = cmd.getOptionValue('r')
         val queue = Integer.valueOf(cmd.getOptionValue('q'))
         val server = Server(port, root, cpu, queue);
         server.start()
-    } catch(e: Exception) {
+    } catch(e: ParseException) {
         help(options)
+    } catch(e: BindException) {
+        println(e.message + "port $port")
     }
 }
 
