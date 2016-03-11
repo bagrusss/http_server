@@ -4,6 +4,7 @@ import org.apache.commons.cli.DefaultParser
 import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.Options
 import org.apache.commons.cli.ParseException
+import ru.bagrusss.httpserver.server.Server
 import java.net.BindException
 
 /**
@@ -21,7 +22,7 @@ fun main(args: Array<String>) {
     var cmd = DefaultParser().parse(options, args)
     if (cmd.hasOption('h')) {
         help(options)
-        println(Runtime.getRuntime().availableProcessors())
+        //println(Runtime.getRuntime().availableProcessors())
         return
     }
     var port = 0

@@ -1,4 +1,4 @@
-package ru.bagrusss.httpserver
+package ru.bagrusss.httpserver.server
 
 import java.net.ServerSocket
 import java.util.concurrent.ForkJoinPool
@@ -10,32 +10,32 @@ import java.util.concurrent.ForkJoinPool
 class Server(port: Int, dir: String,
              cpu: Int = Runtime.getRuntime().availableProcessors(), queue: Int = 120) {
 
-    private var mPort = port
-    private var mDir = dir
-    private var mCPU = cpu
+    private val mPort = port
+    private val mDir = dir
+    private val mCPU = cpu
+    private val mQueue = queue
     private var mIsRunning = true
     private val serverSocket: ServerSocket
     private val mPool: ForkJoinPool
-    val mConfig =
+    private val mConfig =
             """
 Server runned!
 port: $mPort
 root dir: $mDir
 cpu count: $mCPU
+queue count: $mQueue
 """
 
     init {
-        serverSocket = ServerSocket(mPort, queue)
         mPool = ForkJoinPool(mCPU)
+        serverSocket = ServerSocket(mPort, queue)
     }
 
     fun start() {
         printConfig()
         while (mIsRunning) {
             var socket = serverSocket.accept()
-            mPool.execute({
-
-            })
+            mPool.execute(ClientTask(socket))
         }
     }
 
