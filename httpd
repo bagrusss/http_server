@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar http_server.jar $@
+java -jar target/server.jar $@ &

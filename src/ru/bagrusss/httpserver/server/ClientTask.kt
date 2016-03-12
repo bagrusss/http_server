@@ -5,21 +5,19 @@ import java.net.Socket
 import java.util.concurrent.RecursiveAction
 
 /**
- * Created by vladislav on 11.03.16.
+ * Created by vladislav
  */
 class ClientTask : RecursiveAction {
     private var socket: Socket
     private var input: InputStream
     private var output: OutputStream
     private var bufferedReader: BufferedReader
-    private var bufferedWriter: BufferedWriter
 
     constructor(s: Socket) {
         socket = s
         input = s.inputStream
         output = s.outputStream
         bufferedReader = BufferedReader(InputStreamReader(input))
-        bufferedWriter = BufferedWriter(OutputStreamWriter(output))
     }
 
     override fun compute() {
@@ -27,15 +25,16 @@ class ClientTask : RecursiveAction {
             var request = Request(bufferedReader)
             val method = request.getMethod()
             val path = request.getPath()
-            var response = Response(method, path)
+            val protocol = request.getProtocol()
+            var response = Response(protocol, method, path, output)
             response.send()
         } catch (e: IOException) {
-
+            println(e.cause)
         } finally {
             try {
                 closeResourses()
             } catch(e: IOException) {
-
+                println(e.message)
             }
         }
     }
@@ -45,6 +44,5 @@ class ClientTask : RecursiveAction {
         input.close()
         output.close()
         bufferedReader.close()
-        bufferedWriter.close()
     }
 }

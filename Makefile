@@ -1,2 +1,1 @@
-all:
-	mvn -f pom.xml compile assembly:single
+mvn clean compile assembly:single

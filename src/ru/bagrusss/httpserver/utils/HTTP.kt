@@ -5,6 +5,7 @@ import java.util.*
 /**
  * Created by vladislav
  */
+
 class MimeTypes {
     val mMimeTypes = HashMap<String, String>()
 
@@ -23,5 +24,15 @@ class MimeTypes {
     fun getMimeType(s: String): String? {
         return mMimeTypes[s]
     }
-
 }
+
+val mimeType = MimeTypes()
+
+fun getMimeType(s: String) = mimeType.getMimeType(s)
+
+val HTTP_VERSION = "HTTP/1.1"
+val STATUS_200 = "200 OK"
+val STATUS_403 = "403 Forbidden"
+val STATUS_404 = "404 Not Found"
+val STATUS_405 = "405 Method Not Allowed"
+

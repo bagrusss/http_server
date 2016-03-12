@@ -1,5 +1,6 @@
 package ru.bagrusss.httpserver.server
 
+import ru.bagrusss.httpserver.utils.ROOT_DIR
 import java.net.ServerSocket
 import java.util.concurrent.ForkJoinPool
 
@@ -29,6 +30,7 @@ queue count: $mQueue
     init {
         mPool = ForkJoinPool(mCPU)
         serverSocket = ServerSocket(mPort, queue)
+        ROOT_DIR = mDir
     }
 
     fun start() {
