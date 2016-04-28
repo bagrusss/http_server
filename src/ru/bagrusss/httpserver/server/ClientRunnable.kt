@@ -2,13 +2,20 @@ package ru.bagrusss.httpserver.server
 
 import java.io.*
 import java.net.Socket
-import java.util.concurrent.RecursiveAction
 
 /**
  * Created by vladislav
  */
-class ClientTask : RecursiveAction {
-    private var socket: Socket
+
+class ClientRunnable : Runnable {
+    var socket: Socket
+    val size = 5
+    var isEmpty: Boolean = false
+        get() {
+            println("log ")
+            return this.isEmpty
+        }
+
     private var input: InputStream
     private var output: OutputStream
     private var bufferedReader: BufferedReader
@@ -20,7 +27,7 @@ class ClientTask : RecursiveAction {
         bufferedReader = BufferedReader(InputStreamReader(input))
     }
 
-    override fun compute() {
+    override fun run() {
         try {
             var request = Request(bufferedReader)
             val method = request.getMethod()
