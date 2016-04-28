@@ -11,6 +11,7 @@ class MimeTypes {
 
     constructor() {
         mMimeTypes.put("html", "text/html")
+        mMimeTypes.put("htm", "text/html")
         mMimeTypes.put("css", "text/css")
         mMimeTypes.put("js", "text/javascript")
         mMimeTypes.put("jpg", "image/jpeg")
@@ -19,6 +20,7 @@ class MimeTypes {
         mMimeTypes.put("gif", "image/gif")
         mMimeTypes.put("swf", "application/x-shockwave-flash")
         mMimeTypes.put("json", "application/json")
+        mMimeTypes.put("txt", "text/*")
     }
 
     fun getMimeType(s: String): String? {

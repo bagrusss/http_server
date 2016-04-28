@@ -5,9 +5,8 @@ import java.net.URLDecoder
 import java.util.*
 
 /**
- * Created by vladislav
+ * Created by bagrusss
  */
-
 
 class Request {
 
@@ -30,7 +29,7 @@ class Request {
             var buf2: String
             devider = isHeader(buffer)
             if (devider == -1) {
-                protocol.append(buffer.substring(buffer.lastIndexOf(' ')))
+                protocol.append(buffer.substring(buffer.lastIndexOf(' ') + 1))
                 method.append(buffer.substring(0, pos).toUpperCase())
                 buf2 = buffer.substring(pos + 1)
                 path.append(URLDecoder.decode(buf2.substring(0, buf2.indexOf(' ')), "UTF-8"))

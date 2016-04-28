@@ -28,7 +28,7 @@ queue count: $mQueue
 """
 
     init {
-        mPool = ForkJoinPool(mCPU)
+        mPool = ForkJoinPool(mCPU * 2 + 1)
         serverSocket = ServerSocket(mPort, queue)
         ROOT_DIR = mDir
     }
@@ -37,7 +37,8 @@ queue count: $mQueue
         printConfig()
         while (mIsRunning) {
             var socket = serverSocket.accept()
-            mPool.execute(ClientTask(socket))
+            var task = ClientRunnable(socket)
+            mPool.execute(task)
         }
     }
 

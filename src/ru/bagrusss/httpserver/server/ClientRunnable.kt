@@ -10,11 +10,6 @@ import java.net.Socket
 class ClientRunnable : Runnable {
     var socket: Socket
     val size = 5
-    var isEmpty: Boolean = false
-        get() {
-            println("log ")
-            return this.isEmpty
-        }
 
     private var input: InputStream
     private var output: OutputStream
@@ -47,9 +42,9 @@ class ClientRunnable : Runnable {
     }
 
     private fun closeResourses() {
-        socket.close()
+        bufferedReader.close()
         input.close()
         output.close()
-        bufferedReader.close()
+        socket.close()
     }
 }

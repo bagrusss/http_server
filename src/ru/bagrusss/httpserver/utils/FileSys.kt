@@ -9,7 +9,3 @@ import java.nio.file.Paths
 var ROOT_DIR = "~/static"
 var INDEX = "index.html"
 val CURRENT_PATH = Paths.get("").toAbsolutePath()
-
-fun getPathFile() {
-
-}

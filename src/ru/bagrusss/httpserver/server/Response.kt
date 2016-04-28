@@ -1,10 +1,9 @@
 package ru.bagrusss.httpserver.server
 
-import ru.bagrusss.httpserver.utils.INDEX
-import ru.bagrusss.httpserver.utils.ROOT_DIR
-import ru.bagrusss.httpserver.utils.STATUS_405
-import ru.bagrusss.httpserver.utils.getMimeType
+import org.apache.commons.io.IOUtils
+import ru.bagrusss.httpserver.utils.*
 import java.io.File
+import java.io.FileInputStream
 import java.io.OutputStream
 import java.util.*
 
@@ -22,12 +21,14 @@ class Response(protocol: String, method: String, path: String, out: OutputStream
     private var out = out
     private val protocol = protocol
 
+    private val HTTP_DEVIDER = "\r\n\r\n"
+
     fun send() {
         if (!(method.equals("GET") || method.equals("HEAD"))) {
             print405()
             return
         }
-        val path = ROOT_DIR + path
+        val path = ROOT_DIR + path.split("?")[0]
         if (path.contains("../")) {
             print404()
             return
@@ -36,30 +37,74 @@ class Response(protocol: String, method: String, path: String, out: OutputStream
         if (file.isDirectory) {
             file = File(path + INDEX)
             if (file.exists()) {
-                print200(file)
+                print200(file, method.equals("GET"))
+                return
             } else {
                 print403()
+                return
             }
-
+        }
+        if (file.exists()) {
+            print200(file, method.equals("GET"))
+        } else {
+            print404()
         }
     }
 
     private fun print405() {
         out.flush()
-        out.write(STATIC_HEADERS.format(protocol, STATUS_405, Calendar.getInstance().time,
-                getMimeType("html"), "0").toByteArray())
+        out.write(STATIC_HEADERS.format(
+                protocol,
+                STATUS_405,
+                Calendar.getInstance().time,
+                getMimeType("html"),
+                "0").toByteArray())
     }
 
     private fun print403() {
-
+        out.flush()
+        out.write(STATIC_HEADERS.format(
+                protocol,
+                STATUS_403,
+                Calendar.getInstance().time,
+                getMimeType("html"),
+                "0").toByteArray())
     }
 
     private fun print404() {
-
+        out.flush()
+        out.write(STATIC_HEADERS.format(
+                protocol,
+                STATUS_404,
+                Calendar.getInstance().time,
+                getMimeType("html"),
+                "0").toByteArray())
     }
 
-    private fun print200(file: File?) {
-
+    private fun print200(file: File, isGet: Boolean) {
+        var exten = ""
+        val i = file.absolutePath.lastIndexOf('.');
+        if (i > 0) {
+            exten = file.absolutePath.substring(i + 1);
+        }
+        val mime = getMimeType(exten)
+        if (mime == null) {
+            print403()
+            return
+        }
+        out.flush()
+        out.write(STATIC_HEADERS.format(
+                protocol,
+                STATUS_200,
+                Calendar.getInstance().time,
+                mime,
+                file.length()
+        ).toByteArray())
+        out.write(HTTP_DEVIDER.toByteArray())
+        if (isGet) {
+            FileInputStream(file).use {
+                out.write(IOUtils.toByteArray(it))
+            }
+        }
     }
-
 }
