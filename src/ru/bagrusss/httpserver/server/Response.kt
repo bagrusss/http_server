@@ -21,7 +21,7 @@ class Response(protocol: String, method: String, path: String, out: OutputStream
     private var out = out
     private val protocol = protocol
 
-    private val HTTP_DEVIDER = "\r\n\r\n"
+    private val HTTP_DEVIDER = "\r\n"
 
     fun send() {
         if (!(method.equals("GET") || method.equals("HEAD"))) {
