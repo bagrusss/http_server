@@ -24,7 +24,7 @@ fun main(args: Array<String>) {
     var cmd = DefaultParser().parse(options, args)
     if (cmd.hasOption('h')) {
         help(options)
-        return
+        System.exit(0)
     }
     var port = 0
     try {

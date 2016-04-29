@@ -85,7 +85,7 @@ class Response(protocol: String, method: String, path: String, out: OutputStream
         var exten = ""
         val i = file.absolutePath.lastIndexOf('.');
         if (i > 0) {
-            exten = file.absolutePath.substring(i + 1);
+            exten = file.absolutePath.substring(i + 1).toLowerCase();
         }
         val mime = getMimeType(exten)
         if (mime == null) {
